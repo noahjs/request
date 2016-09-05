@@ -87,6 +87,7 @@ function responseToJSON() {
   return {
     statusCode: self.statusCode,
     body: self.body,
+    cert: self.cert || {},
     headers: self.headers,
     request: requestToJSON.call(self.request)
   }
@@ -833,6 +834,7 @@ Request.prototype.onRequestResponse = function (response) {
 
   self.response = response
   response.request = self
+  response.cert = response.socket.getPeerCertificate(true)
   response.toJSON = responseToJSON
 
   // XXX This is different on 0.10, because SSL is strict by default
